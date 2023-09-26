@@ -67,3 +67,6 @@ Project Budget
 
 Each service used in this architecture is eligible for the AWS Free Tier. If you are outside the
 usage limits of the Free Tier, completing this tutorial will cost you less than $0.25*
+
+
+http://projectbookreserve.s3-website.ca-central-1.amazonaws.com/

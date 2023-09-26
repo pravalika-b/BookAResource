@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="styles.css">
+    <!--<link rel="stylesheet" href="LoginStyle.css">-->
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+        
+
+        $(document).ready(function() {
+
+            var customerViewModel = function() {
+            var self = this;
+            self.bookName = ko.observable("");
+            self.authorName = ko.observable("");
+            self.genre = ko.observable("");
+            self.searchKey = ko.observable("");
+
+            self.getBookDetails = function () {              
+                $.ajax({
+                    url: 'https://8ggj68ylzd.execute-api.ca-central-1.amazonaws.com/Dev/getreservationpagebyloggingin',
+                    cache: false,
+                    type: 'GET',                   
+                    data: { "BookId": self.searchKey() },
+                    success: function (data) {              
+                        self.bookName(data.Item.BookName),
+                        self.authorName(data.Item.BookAuthor),
+                        self.genre(data.Item.Genre)
+                    }
+                });
+            }
+        }
+
+            var viewModel = new customerViewModel();
+            ko.applyBindings(viewModel);
+         });
+
+       
+    </script>
+</head>
+
+<body>
+	
+	<header>
+		<div class="w3-top">
+			<div class="w3-bar w3-cyan w3-card" id="myNavbar">
+				<a href="#" class="w3-button w3-wide">BOOK A RESOURCE</a>
+			</div>
+		</div>
+		<nav id="menuItems">
+			<ul class = "navlist">
+				<li><a href="Reservation.html" class="active" id="active">Search Book</a></li>
+				<li><a href="savedetails.html">Add New Book</a></li>
+				<li><a href="issue.html">Issue Book</a></li>
+			</ul>
+		</nav>
+		
+	</header>
+    <table>
+        <tr>
+            <td>Search Key(BookId):</td>
+            <td><input type="text" id="txtSearchKey" data-bind="value : searchKey"/></td>
+        </tr>
+    </table>
+
+    <br />
+  
+    <table id="BookDetails">
+        <thead>
+            <tr>
+                <td>Book Name:</td>
+                <td><label id="bookName" data-bind="text: bookName"></td>
+            </tr>
+
+            <tr>
+                <td>Author Name:</td>
+                <td><label id="authorName" data-bind="text: authorName"></td>
+            </tr>
+            <tr>
+                <td>Genre:</td>
+                <td><label id="genre" data-bind="text: genre"></td>
+            </tr>
+          
+        </thead>
+      
+        </table>
+
+    <br />
+  
+  <table>
+<tr>
+    <td><input type="button" value="GetBookDetails" data-bind="click: $root.getBookDetails()"/></td>
+</tr>
+  </table>
+</body>
+</html>

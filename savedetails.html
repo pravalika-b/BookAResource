@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="styles.css">
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+        
+
+		jQuery.support.cors = true;
+		
+        $(document).ready(function() {
+
+            var customerDetailsViewModel = function() {
+            var self = this;
+			self.bookId = ko.observable("");
+			self.bookName = ko.observable("");
+            self.authorName = ko.observable("");
+            self.genre = ko.observable("");
+            self.SuccessMessage = ko.observable("");
+			
+
+            self.SaveBookDetails = function () {              
+                
+				var BookDetail = {
+				
+				BookId: self.bookId(),
+				BookName: self.bookName(),
+				BookAuthor: self.authorName(),
+				Genre: self.genre()
+				
+				}
+				
+				$.ajax({
+					crossDomain: true,
+				
+                    url: 'https://88vuzldwj5.execute-api.ca-central-1.amazonaws.com/Dev/postbookdetails',
+                    cache: false,
+                    type: 'POST', 
+                    data: ko.toJSON(BookDetail),
+                    success: function (data) {              
+                        self.SuccessMessage(data)
+							self.bookId('');
+							self.bookName('');
+							self.authorName('');
+							self.genre('')
+                    }
+					}).fail(
+					
+					
+					function(xhr, textStatus, err){
+					alert("Error happened "+err);
+					
+                });
+            };
+        }
+
+            var viewModel = new customerDetailsViewModel();
+            ko.applyBindings(viewModel);
+         });
+
+       
+    </script>
+</head>
+<body>
+	
+	<header>
+		<div class="w3-top">
+			<div class="w3-bar w3-cyan w3-card" id="myNavbar">
+				<a href="#" class="w3-button w3-wide">BOOK A RESOURCE</a>
+			</div>
+		</div>
+	
+		<nav id="menuItems">
+			<ul class = "navlist">
+				<li><a href="Reservation.html">Search Book</a></li>
+				<li><a href="savedetails.html" class="active" id="active">Add New Book</a></li>
+				<li><a href="issue.html">Issue Book</a></li>
+			</ul>
+		</nav>
+		
+	</header>
+    <table>
+        <tr>
+            <td>
+				<div>
+					<p>
+						BookId:
+						<input data-bind='value: bookId' />	
+					</p>
+					<p>
+						BookName:
+						<input data-bind='value: bookName' />
+					</p>
+					<p>
+						BookAuthor:
+						<input data-bind='value: authorName' />
+					</p>
+					<p>
+						Genre:
+						<input data-bind='value: genre' />
+					</p>
+					
+						
+				</div>
+						
+					<span style ="color: darkolivegreen" data-bind='text : SuccessMessage' />
+					
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div>
+					<button data-bind="click: $root.SaveBookDetails" > Save </button>
+				</div>
+			</td>
+		</tr>
+					
+	</table>
+				
+</body>
+</html>

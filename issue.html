@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="styles.css">
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+        
+
+		jQuery.support.cors = true;
+		
+        $(document).ready(function() {
+
+            var customerDetailsViewModel = function() {
+            var self = this;
+			self.bookId = ko.observable("");
+			self.bookName = ko.observable("");
+            self.authorName = ko.observable("");
+            self.genre = ko.observable("");
+            self.SuccessMessage = ko.observable("");
+			
+
+            self.SaveBookDetails = function () {              
+                
+				var BookDetail = {
+				
+				BookId: self.bookId(),
+				BookName: self.bookName(),
+				BookAuthor: self.authorName(),
+				Genre: self.genre()
+				
+				}
+				
+				$.ajax({
+					crossDomain: true,
+				
+                    url: 'https://88vuzldwj5.execute-api.ca-central-1.amazonaws.com/Dev/postbookdetails',
+                    cache: false,
+                    type: 'POST', 
+                    data: ko.toJSON(BookDetail),
+                    success: function (data) {              
+                        self.SuccessMessage(data)
+							self.bookId('');
+							self.bookName('');
+							self.authorName('');
+							self.genre('')
+                    }
+					}).fail(
+					
+					
+					function(xhr, textStatus, err){
+					alert("Error happened "+err);
+					
+                });
+            };
+        }
+
+            var viewModel = new customerDetailsViewModel();
+            ko.applyBindings(viewModel);
+         });
+
+       
+    </script>
+</head>
+<body>
+	
+	<header>
+		<div class="w3-top">
+			<div class="w3-bar w3-cyan w3-card" id="myNavbar">
+				<a href="#" class="w3-button w3-wide">BOOK A RESOURCE</a>
+			</div>
+		</div>
+	
+		<nav id="menuItems">
+			<ul class = "navlist">
+				<li><a href="Reservation.html">Search Book</a></li>
+				<li><a href="savedetails.html" class="active" id="active">Add New Book</a></li>
+				<li><a href="issue.html">Issue Book</a></li>
+			</ul>
+		</nav>
+		
+	</header>
+	<main>
+		<div class="Features">
+		<div class="full-width">
+			<div class="titlepage">
+				<h2>ISSUE A BOOK</h2>
+
+
+				<table>
+					<th>       </th>
+					<th>Book ID</th>
+					<th>Book Name</th>
+					<th>Author Name</th>
+					<th>Genre</th>
+					
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td/>1001</td>
+						<td>Half Girlfirend</td>
+						<td>Chetan Bhagat</td>
+						<td>Romance</td>
+					</tr>
+
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1002</td>
+						<td>The Power of Letting Go</td>
+						<td>John</td>
+						<td>Fiction</td>
+					</tr>
+
+
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1003</td>
+						<td>The Girl Who Survived</td>
+						<td>Elliee</td>
+						<td>Fiction</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1004</td>
+						<td>Where the forest meets the star</td>
+						<td>Glendy</td>
+						<td>Historical</td>
+					</tr>
+
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1005</td>
+						<td>Cloud Computing Basics</td>
+						<td>Rehman</td>
+						<td>Networking</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1006</td>
+						<td>All About Love</td>
+						<td>Bell Hookes</td>
+						<td>Social Science</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1007</td>
+						<td>You are twenties</td>
+						<td>Jesicca</td>
+						<td>Romance</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1008</td>
+						<td>Finding me</td>
+						<td>Viola</td>
+						<td>Biography</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1009</td>
+						<td>Sari not sari</td>
+						<td>Sonia Singh</td>
+						<td>Romcom</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" />    &nbsp;   </td>
+						<td>1010</td>
+						<td>Again But Better</td>
+						<td>Christine Rico</td>
+						<td>Mental health</td>
+						
+					</tr>
+					<tr>
+						<td>
+							<div>
+								<button> Issue </button>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	</main>
+				
+</body>
+</html>
